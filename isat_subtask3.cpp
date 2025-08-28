@@ -1,72 +1,14 @@
 #include <iostream>
-#include <vector>
-#include <string>
 using namespace std;
 
-struct Order {
-    int orderID;
-    string customerName;
-    int numMagwinyas;
-    double totalCost;
-};
-
-vector<Order> orders;
-
-void addOrder() {
-    Order newOrder;
-    cout << "Enter Order ID: ";
-    cin >> newOrder.orderID;
-    cout << "Enter Customer Name: ";
-    cin >> newOrder.customerName;
-    cout << "Enter Number of Magwinyas Ordered: ";
-    cin >> newOrder.numMagwinyas;
-    newOrder.totalCost = newOrder.numMagwinyas * 5.0; // assume each Magwinya costs 5
-    orders.push_back(newOrder);
-    cout << "Order added successfully!\n";
-}
-
-void displayOrders() {
-    if (orders.empty()) {
-        cout << "No orders to display.\n";
-        return;
-    }
-    cout << "All Orders:\n";
-    for (auto &o : orders) {
-        cout << "Order ID: " << o.orderID
-             << ", Customer: " << o.customerName
-             << ", Number of Magwinyas: " << o.numMagwinyas
-             << ", Total: " << o.totalCost << "\n";
-    }
-}
-
-void findOrderByID() {
-    int id;
-    cout << "Enter Order ID to find: ";
-    cin >> id;
-    bool found = false;
-    for (auto &o : orders) {
-        if (o.orderID == id) {
-            cout << "Order ID: " << o.orderID
-                 << ", Customer: " << o.customerName
-                 << ", Number of Magwinyas: " << o.numMagwinyas
-                 << ", Total: " << o.totalCost << "\n";
-            found = true;
-            break;
-        }
-    }
-    if (!found) cout << "Order with Order ID " << id << " not found.\n";
-}
-
-void calculateTotalRevenue() {
-    double total = 0;
-    for (auto &o : orders) {
-        total += o.totalCost;
-    }
-    cout << "Total revenue: " << total << "\n";
-}
-
 int main() {
+    int orderID[50];          // store order IDs
+    string customer[50];      // store customer names
+    int magwinyas[50];        // store number of magwinyas
+    int total[50];            // store total cost entered by user
+    int count = 0;            // number of orders saved
     int choice;
+
     do {
         cout << "\nOrder Management System\n";
         cout << "1. Add a new order\n";
@@ -77,14 +19,64 @@ int main() {
         cout << "Enter your choice (1-5): ";
         cin >> choice;
 
-        switch (choice) {
-            case 1: addOrder(); break;
-            case 2: displayOrders(); break;
-            case 3: findOrderByID(); break;
-            case 4: calculateTotalRevenue(); break;
-            case 5: cout << "Exiting...\n"; break;
-            default: cout << "Invalid choice!\n";
+        if (choice == 1) {
+            cout << "Enter Order ID: ";
+            cin >> orderID[count];
+            cout << "Enter Customer Name: ";
+            cin >> customer[count];
+            cout << "Enter Number of Magwinyas: ";
+            cin >> magwinyas[count];
+            cout << "Enter Total Cost: ";
+            cin >> total[count];
+            cout << "Order added successfully!\n";
+            count++;
         }
+        else if (choice == 2) {
+            if (count == 0) {
+                cout << "No orders to display.\n";
+            } else {
+                cout << "\nAll Orders:\n";
+                for (int i = 0; i < count; i++) {
+                    cout << "Order ID: " << orderID[i]
+                         << ", Customer: " << customer[i]
+                         << ", Number of Magwinyas: " << magwinyas[i]
+                         << ", Total: " << total[i] << endl;
+                }
+            }
+        }
+        else if (choice == 3) {
+            int id;
+            cout << "Enter Order ID to find: ";
+            cin >> id;
+            bool found = false;
+            for (int i = 0; i < count; i++) {
+                if (orderID[i] == id) {
+                    cout << "Order ID: " << orderID[i]
+                         << ", Customer: " << customer[i]
+                         << ", Number of Magwinyas: " << magwinyas[i]
+                         << ", Total: " << total[i] << endl;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                cout << "Order with ID " << id << " not found.\n";
+            }
+        }
+        else if (choice == 4) {
+            int revenue = 0;
+            for (int i = 0; i < count; i++) {
+                revenue += total[i];
+            }
+            cout << "Total revenue: " << revenue << endl;
+        }
+        else if (choice == 5) {
+            cout << "Exiting program...\n";
+        }
+        else {
+            cout << "Invalid choice, try again.\n";
+        }
+
     } while (choice != 5);
 
     return 0;
